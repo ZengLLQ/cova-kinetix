@@ -519,6 +519,8 @@ def _predict_gsh_half_life(
     # EHT global omega typically spans 30-55 eV; local omega = omega * f+ spans 2-14 eV
     delta_log10 = -eht_slope * (local_omega_ev - 6.5) - 0.01 * (global_omega_ev - 42.0)
     delta_log10 = float(np.clip(delta_log10, -0.8, 0.8))
+    if tpl is not None and tpl.electrophile_role == "sn2_halide":
+        delta_log10 = min(delta_log10, 0.05)
     return float(max(1.0, base_t_half * (10.0 ** delta_log10)))
 
 
